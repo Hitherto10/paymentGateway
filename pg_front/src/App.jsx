@@ -1,5 +1,5 @@
-
 import InlinePayment from "./components/InlinePayment.jsx";
+// import PaymentPortalLanding from "./components/PaymentPortalLanding.jsx";
 
 function App() {
 
@@ -7,6 +7,7 @@ function App() {
   return (
       <>
           <InlinePayment />
+          {/*<PaymentPortalLanding />*/}
       </>
   );
 }

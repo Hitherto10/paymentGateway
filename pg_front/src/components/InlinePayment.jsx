@@ -1,5 +1,23 @@
 import React, {useEffect, useState} from 'react';
-
+import {
+    CreditCard,
+    Shield,
+    Users,
+    Building2,
+    Hospital,
+    GraduationCap,
+    CheckCircle,
+    ArrowRight,
+    Search,
+    Lock,
+    Globe,
+    Zap,
+    BarChart3,
+    Settings,
+    Phone,
+    Mail,
+    MapPin
+} from 'lucide-react';
 
 function InlinePayment() {
     const [rrr, setRRR] = useState('');
@@ -147,7 +165,6 @@ function InlinePayment() {
 
     function makePayment() {
 
-
         let form = document.querySelector("#payment-form");
         let paymentEngine = RmPaymentEngine.init({
             key: "QzAwMDAyNzEyNTl8MTEwNjE4NjF8OWZjOWYwNmMyZDk3MDRhYWM3YThiOThlNTNjZTE3ZjYxOTY5NDdmZWE1YzU3NDc0ZjE2ZDZjNTg1YWYxNWY3NWM4ZjMzNzZhNjNhZWZlOWQwNmJhNTFkMjIxYTRiMjYzZDkzNGQ3NTUxNDIxYWNlOGY4ZWEyODY3ZjlhNGUwYTY=",
@@ -184,6 +201,44 @@ function InlinePayment() {
 
 
     }
+    function useRRR() {
+
+        let payWithRRR = document.getElementById("rrrInput");
+        let paymentEngine = RmPaymentEngine.init({
+            key: "QzAwMDAyNzEyNTl8MTEwNjE4NjF8OWZjOWYwNmMyZDk3MDRhYWM3YThiOThlNTNjZTE3ZjYxOTY5NDdmZWE1YzU3NDc0ZjE2ZDZjNTg1YWYxNWY3NWM4ZjMzNzZhNjNhZWZlOWQwNmJhNTFkMjIxYTRiMjYzZDkzNGQ3NTUxNDIxYWNlOGY4ZWEyODY3ZjlhNGUwYTY=",
+            processRrr: true,
+            transactionId: Math.floor(Math.random()*1101233),
+            extendedData: {
+                customFields: [
+                    {
+                        name: "rrr",
+                        value: payWithRRR.value
+                    }
+                ]
+            },
+            onSuccess: function (response) {
+                savePaymentDetails();
+                console.log('callback Successful Response', response);
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET", "https://remita.net/");
+                xhr.send();
+            },
+            onError: function (response) {
+                console.log('callback Error Response', response);
+            },
+            onClose: function () {
+                let leavePayment = confirm("Abandon Payment?");
+                if (leavePayment) {
+
+                } else {
+                    makePayment();
+                }
+            }
+        });
+        paymentEngine.showPaymentWidget();
+
+
+    }
     window.onload = function () {
         setDemoData();
     };
@@ -191,69 +246,199 @@ function InlinePayment() {
     const filteredTransactions = [...transactionList, ...purchases].filter((t) =>
         t.RRR.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
+    const [activeTab, setActiveTab] = useState('payment');
+    // const [paymentData, setPaymentData] = useState({
+    //     amount: '',
+    //     email: '',
+    //     phone: '',
+    //     description: ''
+    // });
+    const [statusRef, setStatusRef] = useState('');
 
 
     return (
         <>
-            <section
-                className="max-w-[500px] m-auto bg-[#f9f9f9] rounded-lg content-center overflow-hidden">
-
-                <div className="p-6 lg:p-10 space-y-5 font-[Montserrat] text-[13px]">
-
-
-                    <form id="payment-form">
-
-                        <div className="form-floating mb-3 mt-3">
-                            <h1 className="text-3xl lg:text-4xl font-bold font-[Outfit] text-gray-800 lg:mb-12">
-                                Proceed to make payment<br/>
-                                {/*<span style={{color: "#28909E"}}>{rrr}</span>*/}
-                                {/*<input type="text" disabled={true} className="form-control input rounded-md w-[100%] font-[Montserrat] text-xl font-bold text-[green]" id="js-rrr" name="rrr" value={rrr}/>*/}
-                            </h1>
-
+            <section id="payment" className="py-20 bg-white">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {/*<form id="payment-form">*/}
+                        <div className="text-center mb-12">
+                            <h2 className="text-4xl font-[Sora] font-bold text-gray-900 mb-4">Payment Portal</h2>
+                            <p className="text-xl font-[Outfit] text-gray-600">Make payments or check transaction status</p>
                         </div>
 
-                        <div className="grid grid-cols-2  gap-5 font-white">
+                        <div className="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
 
-                            <input id="name" type="text" placeholder="Name"
-                                   className="input rounded-md font-[Montserrat] text-[13px] bg-[white] border p-2"/>
+                             {/*Tab Navigation*/}
+                            <div className="flex border-b border-gray-200">
+                                <button type="button"
+                                    onClick={() => setActiveTab('payment')}
+                                    className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                                        activeTab === 'payment'
+                                            ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                                            : 'text-gray-600 hover:text-blue-600'
+                                    }`}
+                                >
+                                    <CreditCard className="w-5 h-5 inline mr-2" />
+                                    Make Payment
+                                </button>
+                                <button type="button"
+                                    onClick={() => setActiveTab('rrr')}
+                                    className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                                        activeTab === 'rrr'
+                                            ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                                            : 'text-gray-600 hover:text-blue-600'
+                                    }`}
+                                >
+                                    <Lock className="w-5 h-5 inline mr-2" />
+                                    Pay with Generated RRR
+                                </button>
+                                <button type="button"
+                                    onClick={() => setActiveTab('status')}
+                                    className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                                        activeTab === 'status'
+                                            ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                                            : 'text-gray-600 hover:text-blue-600'
+                                    }`}
+                                >
+                                    <Search className="w-5 h-5 inline mr-2" />
+                                    Check Status
+                                </button>
+                            </div>
 
-                            <input id="email" type="email" placeholder="Email"
-                                   className="input rounded-md font-[Montserrat] text-[13px] bg-[white] border p-2"/>
+                            <div className="p-8">
+                                {activeTab === 'payment' ? (
+                                        <div className="space-y-6">
+                                            <form>
+                                                <div className="grid font-[Montserrat] text-sm md:grid-cols-2 gap-6">
 
-                            <input id="phone" type="tel" placeholder="Phone"
-                                   className="input rounded-md font-[Montserrat] text-[13px] bg-[white] border p-2"/>
+                                                    <div>
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Payer Name</label>
+                                                        <input id="name" type="text" placeholder="Name"
+                                                               className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
 
-                            <input id="amount" type="text" placeholder="Amount"
-                                   value={amount}
-                                   onChange={(e) => setAmount(e.target.value)}
-                                   disabled={isAmountFixed}
-                                   className="input rounded-md font-[Montserrat] text-[13px] border p-2"/>
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                                                        <input id="email"
+                                                               type="email"
+                                                               name="payment_email"
+                                                               placeholder="Email"
+                                                               className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                                                        <input id="phone" type="tel" placeholder="Phone"
+                                                               className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Amount (₦)</label>
+                                                        <input id="amount" type="text" placeholder="Amount"
+                                                               value={amount}
+                                                               onChange={(e) => setAmount(e.target.value)}
+                                                               disabled={isAmountFixed}
+                                                               className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
+                                                    </div>
 
-                            <select name="cars" id="cars" className="input rounded-md font-[Montserrat] text-[13px] bg-[white] border p-2" onChange={handleServiceTypeChange}>
-                                <option value="Select an option" hidden>What are you paying for</option>
-                                {serviceTypes.map((service_type_details) => (
-                                    <option id="serviceTypeID" key={service_type_details.service_type_id}>
-                                        {service_type_details.service_type_name}
-                                    </option>
-                                ))}
+                                                    <div>
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+                                                        <select className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" onChange={handleServiceTypeChange}>
+                                                            <option value="Select an option" hidden>What are you paying for</option>
+                                                            {serviceTypes.map((service_type_details) => (
+                                                                <option id="serviceTypeID" key={service_type_details.service_type_id}>
+                                                                    {service_type_details.service_type_name}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+                                                        <textarea id="description" placeholder="Payment Description"
+                                                                  className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
+                                                    </div>
+
+                                                </div>
+
+                                                <button type="button" onClick={handleGenerateRRR}
+                                                        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg flex items-center">
+                                                    <Lock className="w-5 h-5 mr-2" />
+                                                    Generate RRR
+                                                </button>
+                                            </form>
+                                        </div>
+                                    ) :
+                                    activeTab === 'rrr' ? (
+                                            <div className="space-y-6">
+                                                <form>
+                                                    <div className="space-y-6">
+                                                        <div className="text-center">
+                                                            <Lock className="w-16 h-16 text-blue-500 mx-auto mb-4" />
+                                                            <h3 className="text-2xl font-bold text-gray-900 mb-2">Pay with Generated RRR</h3>
+                                                            <p className="text-gray-600">Enter your Remita Retrieval Reference (RRR) to proceed with payment</p>
+                                                        </div>
+
+                                                        <div className="max-w-md mx-auto">
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Remita Retrieval Reference (RRR)</label>
+
+                                                            <input type="number"
+                                                                   autoComplete="off"
+                                                                   className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-center text-lg font-mono" id="rrrInput" name="rrr" placeholder="Enter RRR (e.g., 24000706140)"/>
+                                                        </div>
+
+                                                        <div className="flex justify-center">
+                                                            <button type="button" onClick={useRRR}
+                                                                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg flex items-center">
+                                                                <Lock className="w-5 h-5 mr-2" />
+                                                                Proceed to Payment
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                    ) :
+                                        (
+                                              <div className="space-y-6">
+                                                    <div className="text-center">
+                                                        <Search className="w-16 h-16 text-blue-500 mx-auto mb-4" />
+                                                        <h3 className="text-2xl font-bold text-gray-900 mb-2">Check Payment Status</h3>
+                                                        <p className="text-gray-600">Enter your payment reference to track your transaction</p>
+                                                    </div>
+
+                                                    <div className="max-w-md mx-auto">
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Payment Reference</label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Enter payment reference"
+                                                            id="checkRRRInput"
+                                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                                        />
+                                                    </div>
+
+                                                    <div className="flex justify-center">
+                                                        <button
+                                                            onClick={checkRRRInput}
+                                                            className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all transform hover:scale-105 shadow-lg flex items-center">
+                                                            <CheckCircle className="w-5 h-5 mr-2" />
+                                                            Check Status
+                                                        </button>
+                                                    </div>
+
+                                                  <span className="bg-transparent rounded p-3"
+                                                  >Status of Payment: {`${inputBoxStatus}`}</span>
+                                                </div>
+
+                                        )}
+                            </div>
 
 
-                            </select>
 
-                            <textarea id="description" placeholder="Payment Description"
-                                      className="input rounded-md font-[Montserrat] text-[13px] bg-[white] border p-2"/>
+
+
+
+
+
                         </div>
-                        <button type="button" onClick={handleGenerateRRR}
-                                className="button px-6 py-2 bg-[#3a3d59] cursor-pointer text-white rounded font-[Montserrat] m-5 ms-0">
-                            Generate RRR
-                        </button>
-                    </form>
-
-
-
                 </div>
-
             </section>
 
 
@@ -264,6 +449,10 @@ function InlinePayment() {
                 <input type="button" onClick={makePayment} value="Proceed to Payment"
                        className="button px-6 w-[200px] py-2 bg-[#3a3d59] cursor-pointer text-white rounded font-[Montserrat] mb-5"/>
             </div>
+
+
+
+
 
 
 
@@ -285,7 +474,7 @@ function InlinePayment() {
                     <tr>
                         {TABLE_HEAD.map((head, index) => (
                             <th
-                                key={head}
+                                key={index}
                                 className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 px-6 py-3 transition-colors hover:bg-blue-gray-50"
                             >
                                 {head}
@@ -327,26 +516,6 @@ function InlinePayment() {
 
                 </table>
             </div>
-
-
-            <div className="flex items-center w-xl m-7 justify-center p-5 bg-blue-300">
-                <input
-                    type="number"
-                    placeholder="Input RRR"
-                    id="checkRRRInput"
-                    className="bg-white border rounded-2xl p-3 me-2"
-                />
-                <button
-                    type="submit"
-                    onClick={checkRRRInput}
-                    className="bg-gray-800 text-white rounded-xl px-4 py-2 me-2"
-                >
-                    Submit
-                </button>
-                <span className="bg-transparent rounded p-3"
-                >Status of Payment: {inputBoxStatus}</span>
-            </div>
-
         </>
     )
 }
