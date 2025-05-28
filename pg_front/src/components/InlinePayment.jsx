@@ -5,6 +5,7 @@ function InlinePayment() {
     const [rrr, setRRR] = useState('');
     const [paymentStatus, setpaymentStatus] = useState('');
     const [service_type_id, setService_type_id] = useState('');
+    const [inputBoxStatus, setInputBoxStatus] = useState('');
     const [purchases, setPurchasesTable] = useState([])
     const [transactionList, setTransactionList] = useState([])
     const [serviceTypes, setServiceTypes] = useState([]);
@@ -13,6 +14,13 @@ function InlinePayment() {
     const [isAmountFixed, setIsAmountFixed] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
+    // const checkRRRInput = document.getElementById('checkRRRInput');
+
+    async function checkRRRInput () {
+        const input = document.getElementById('checkRRRInput').value;
+        const scopeStatus = await checkRRRStatus(input);
+        setInputBoxStatus(scopeStatus.toString()); // update textbox with new status
+    }
 
 
 
@@ -318,6 +326,25 @@ function InlinePayment() {
                     </tbody>
 
                 </table>
+            </div>
+
+
+            <div className="flex items-center w-xl m-7 justify-center p-5 bg-blue-300">
+                <input
+                    type="number"
+                    placeholder="Input RRR"
+                    id="checkRRRInput"
+                    className="bg-white border rounded-2xl p-3 me-2"
+                />
+                <button
+                    type="submit"
+                    onClick={checkRRRInput}
+                    className="bg-gray-800 text-white rounded-xl px-4 py-2 me-2"
+                >
+                    Submit
+                </button>
+                <span className="bg-transparent rounded p-3"
+                >Status of Payment: {inputBoxStatus}</span>
             </div>
 
         </>
