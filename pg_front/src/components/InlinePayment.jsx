@@ -1,22 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {
     CreditCard,
-    Shield,
-    Users,
-    Building2,
-    Hospital,
-    GraduationCap,
     CheckCircle,
     ArrowRight,
     Search,
     Lock,
-    Globe,
-    Zap,
-    BarChart3,
-    Settings,
-    Phone,
     Mail,
-    MapPin
 } from 'lucide-react';
 
 function InlinePayment() {
@@ -24,31 +13,33 @@ function InlinePayment() {
     const [paymentStatus, setpaymentStatus] = useState('');
     const [service_type_id, setService_type_id] = useState('');
     const [inputBoxStatus, setInputBoxStatus] = useState('');
-    const [purchases, setPurchasesTable] = useState([])
+    const purchases = []
     const [transactionList, setTransactionList] = useState([])
     const [serviceTypes, setServiceTypes] = useState([]);
     const [selectedServiceType, setSelectedServiceType] = useState(null);
     const [amount, setAmount] = useState(0);
     const [isAmountFixed, setIsAmountFixed] = useState(false);
-    const [searchInput, setSearchInput] = useState("");
+    const [receiptDetails, setReceiptDetails] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
-    // const checkRRRInput = document.getElementById('checkRRRInput');
+    const TABLE_HEAD = ["RRR", "Full Name", "Amount", "Description", "Payment Date", "Status"];
+    const [activeTab, setActiveTab] = useState('payment');
+    const [paymentInformation, setPaymentInformation] = useState(null);
 
-    async function checkRRRInput () {
+
+    async function getStatusInfo () {
         const input = document.getElementById('checkRRRInput').value;
-        const scopeStatus = await checkRRRStatus(input);
-        setInputBoxStatus(scopeStatus.toString()); // update textbox with new status
+        const scopeStatus = await retrieveRemitaRef(input);
+        setInputBoxStatus(scopeStatus);
+        setPaymentInformation(scopeStatus)
+        console.log(receiptDetails);
     }
 
-
-
-    const TABLE_HEAD = ["RRR", "Full Name", "Amount", "Description", "Payment Date", "Status"];
-
-
-    async function checkRRRStatus(rrr) {
+    async function retrieveRemitaRef(rrr) {
         const res = await fetch(`/api/check-status/${rrr}`);
         const data = await res.json();
-        return data.message;
+        setReceiptDetails(data);
+        console.log(data);
+        return data;
     }
 
     async function handleGenerateRRR() {
@@ -68,22 +59,21 @@ function InlinePayment() {
         const data = await res.json();
         const newRRR = data.RRR;
         setRRR(newRRR);
-        const payment_status = await checkRRRStatus(newRRR);
-        setpaymentStatus(payment_status);
+        const payment_status = await retrieveRemitaRef(newRRR);
+        console.log(payment_status.message)
+        setpaymentStatus(payment_status.message);
 
         purchases.push({
             "RRR": newRRR,
             "payer_name": document.getElementById("name").value,
             "description": document.getElementById("description").value,
-            "status": payment_status,
+            "status": payment_status.message,
             "amount": document.getElementById("amount").value,
         });
 
         console.log(purchases);
 
         return(data.RRR)
-
-
     }
 
     useEffect(() => {
@@ -127,8 +117,8 @@ function InlinePayment() {
     };
 
     async function savePaymentDetails() {
-        const payment_status = await checkRRRStatus(rrr);
-        setpaymentStatus(payment_status);
+        const payment_status = await retrieveRemitaRef(rrr);
+        setpaymentStatus(payment_status.message);
 
         purchases.push(
             {
@@ -139,7 +129,6 @@ function InlinePayment() {
                 "amount": document.getElementById("amount").value,
             }
         )
-        console.log(purchases);
 
         const res = await fetch('/api/save-to-db', {
             method: 'POST',
@@ -150,7 +139,7 @@ function InlinePayment() {
                 db_RRR: rrr,
                 db_payer_name: document.getElementById("name").value,
                 db_description: document.getElementById("description").value,
-                db_status: payment_status,
+                db_status: payment_status.message,
                 db_amount: document.getElementById("amount").value,
             })
         });
@@ -246,14 +235,7 @@ function InlinePayment() {
     const filteredTransactions = [...transactionList, ...purchases].filter((t) =>
         t.RRR.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    const [activeTab, setActiveTab] = useState('payment');
-    // const [paymentData, setPaymentData] = useState({
-    //     amount: '',
-    //     email: '',
-    //     phone: '',
-    //     description: ''
-    // });
-    const [statusRef, setStatusRef] = useState('');
+
 
 
     return (
@@ -341,7 +323,8 @@ function InlinePayment() {
                                                     </div>
 
                                                     <div>
-                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2"> Service
+                                                        </label>
                                                         <select className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" onChange={handleServiceTypeChange}>
                                                             <option value="Select an option" hidden>What are you paying for</option>
                                                             {serviceTypes.map((service_type_details) => (
@@ -398,34 +381,136 @@ function InlinePayment() {
                                     ) :
                                         (
                                               <div className="space-y-6">
-                                                    <div className="text-center">
-                                                        <Search className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-                                                        <h3 className="text-2xl font-bold text-gray-900 mb-2">Check Payment Status</h3>
-                                                        <p className="text-gray-600">Enter your payment reference to track your transaction</p>
-                                                    </div>
+                                                  {!paymentInformation ? (
+                                                      <>
+                                                          <div className="text-center">
+                                                              <Search className="w-16 h-16 text-blue-500 mx-auto mb-4" />
+                                                              <h3 className="text-2xl font-bold text-gray-900 mb-2">Check Payment Status</h3>
+                                                              <p className="text-gray-600">Enter your payment reference to track your transaction</p>
+                                                          </div>
+                                                          <div className="max-w-md mx-auto">
+                                                              <label className="block text-sm font-semibold text-gray-700 mb-2">Payment Reference</label>
+                                                              <input
+                                                                  type="text"
+                                                                  placeholder="Enter RRR (e.g., 24000706140)"
+                                                                  id="checkRRRInput"
+                                                                  className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-center text-lg font-mono"
+                                                              />
+                                                          </div>
+                                                          <div className="flex justify-center">
+                                                              <button
+                                                                  onClick={getStatusInfo}
+                                                                  className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-2 rounded-xl hover:from-green-700 hover:to-emerald-700
+                                                                  transition-all transform
+                                                                  hover:scale-105 shadow-lg flex items-center">
+                                                                  <CheckCircle className="w-5 h-5 mr-2" />
+                                                                  Check Status
+                                                              </button>
+                                                          </div>
 
-                                                    <div className="max-w-md mx-auto">
-                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Payment Reference</label>
-                                                        <input
-                                                            type="text"
-                                                            placeholder="Enter payment reference"
-                                                            id="checkRRRInput"
-                                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                                        />
-                                                    </div>
+                                                      </>
+                                                  ) : (
+                                                      <div className="max-w-2xl mx-auto">
+                                                          {/* Status Header */}
+                                                          {/*<div className="text-center mb-8">*/}
+                                                          {/*    <div className="flex justify-center mb-4">*/}
+                                                          {/*        {getStatusIcon(paymentStatus.status)}*/}
+                                                          {/*    </div>*/}
+                                                          {/*    <h3 className="text-2xl font-bold text-gray-900 mb-2">Payment Status</h3>*/}
+                                                          {/*    <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border ${getStatusColor(paymentStatus.status)}`}>*/}
+                                                          {/*        {paymentStatus.status.charAt(0).toUpperCase() + paymentStatus.status.slice(1)}*/}
+                                                          {/*    </div>*/}
+                                                          {/*</div>*/}
 
-                                                    <div className="flex justify-center">
-                                                        <button
-                                                            onClick={checkRRRInput}
-                                                            className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all transform hover:scale-105 shadow-lg flex items-center">
-                                                            <CheckCircle className="w-5 h-5 mr-2" />
-                                                            Check Status
-                                                        </button>
-                                                    </div>
+                                                          {/* Payment Details Card */}
+                                                          <div className="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden">
+                                                              {/* Amount Section */}
+                                                              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border-b border-gray-200">
+                                                                  <div className="text-center">
+                                                                      <p className="text-sm text-gray-600 mb-1">Amount Paid</p>
+                                                                      <p className="text-4xl font-bold text-gray-900">₦{parseInt(inputBoxStatus.amount).toLocaleString()}</p>
+                                                                  </div>
+                                                              </div>
 
-                                                  <span className="bg-transparent rounded p-3"
-                                                  >Status of Payment: {`${inputBoxStatus}`}</span>
-                                                </div>
+                                                              {/* Details Grid */}
+                                                              <div className="p-6 space-y-4">
+                                                                  <div className="grid md:grid-cols-2 gap-6">
+                                                                      <div>
+                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Method of Payment</label>
+                                                                          <p className="text-gray-900 font-mono bg-gray-50 py-2 rounded-lg">{inputBoxStatus.channel}</p>
+                                                                      </div>
+                                                                      <div>
+                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Order ID</label>
+                                                                          <p className="text-gray-900 font-mono bg-gray-50 py-2 rounded-lg">{inputBoxStatus.orderId}</p>
+                                                                      </div>
+                                                                  </div>
+
+                                                                  <div className="grid md:grid-cols-2 gap-6">
+                                                                      <div>
+                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Date & Time</label>
+                                                                          <p className="text-gray-900">{new Date(inputBoxStatus.paymentDate).toLocaleString()}</p>
+                                                                      </div>
+                                                                      <div>
+                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Fee Charged </label>
+                                                                          <p className="text-gray-900">₦{inputBoxStatus.chargeFee}</p>
+                                                                      </div>
+                                                                  </div>
+
+                                                                  <div>
+                                                                      <label className="block text-sm font-semibold text-gray-500 mb-1">Description</label>
+                                                                      <p className="text-gray-900">{inputBoxStatus.paymentDescription}</p>
+                                                                  </div>
+
+                                                                  {inputBoxStatus.rrr && (
+                                                                      <div>
+                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">RRR</label>
+                                                                          <p className="text-gray-900 font-mono bg-gray-50 py-2 rounded-lg">{inputBoxStatus.rrr}</p>
+                                                                      </div>
+                                                                  )}
+                                                              </div>
+
+                                                              {/* Customer Information */}
+                                                              <div className="bg-gray-50 p-6 border-t border-gray-200">
+                                                                  <h4 className="text-lg font-semibold text-gray-900 mb-4">Customer Information</h4>
+                                                                  <div className="grid md:grid-cols-3 gap-4">
+                                                                      <div>
+                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Name</label>
+                                                                          <p className="text-gray-900">{inputBoxStatus.payerName}</p>
+                                                                      </div>
+                                                                      <div>
+                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Email</label>
+                                                                          <p className="text-gray-900">{inputBoxStatus.payerEmail}</p>
+                                                                      </div>
+                                                                      <div>
+                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Phone</label>
+                                                                          <p className="text-gray-900">{inputBoxStatus.payerPhoneNumber}</p>
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+
+                                                               {/*Action Buttons*/}
+                                                              <div className="p-6 border-t border-gray-200 flex flex-col sm:flex-row gap-3">
+                                                                  <button className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors flex items-center justify-center">
+                                                                      <Mail className="w-5 h-5 mr-2" />
+                                                                      Email Receipt
+                                                                  </button>
+                                                                  <button className="flex-1 border-2 border-gray-300 text-gray-700 px-6 py-3 rounded-xl hover:border-blue-600 hover:text-blue-600 transition-colors flex items-center justify-center">
+                                                                      <ArrowRight className="w-5 h-5 mr-2" />
+                                                                      Download PDF
+                                                                  </button>
+                                                                  <button
+                                                                      onClick={() => {setPaymentInformation(null); }}
+                                                                      className="sm:w-auto bg-gray-600 text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition-colors flex items-center justify-center"
+                                                                  >
+                                                                      <Search className="w-5 h-5 mr-2" />
+                                                                      New Search
+                                                                  </button>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  )}
+
+                                              </div>
 
                                         )}
                             </div>
