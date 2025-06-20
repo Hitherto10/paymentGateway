@@ -242,287 +242,277 @@ function InlinePayment() {
         <>
             <section id="payment" className="py-20 bg-white">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {/*<form id="payment-form">*/}
-                        <div className="text-center mb-12">
-                            <h2 className="text-4xl font-[Sora] font-bold text-gray-900 mb-4">Payment Portal</h2>
-                            <p className="text-xl font-[Outfit] text-gray-600">Make payments or check transaction status</p>
+                    <div className="text-center mb-12">
+                        <h2 className="text-4xl font-[Sora] font-bold text-gray-900 mb-4">Payment Portal</h2>
+                        <p className="text-xl font-[Outfit] text-gray-600">Make payments or check transaction status</p>
+                    </div>
+
+                    <div className="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+
+                         {/*Tab Navigation*/}
+                        <div className="flex border-b border-gray-200">
+                            <button type="button"
+                                onClick={() => setActiveTab('payment')}
+                                className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                                    activeTab === 'payment'
+                                        ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                                        : 'text-gray-600 hover:text-blue-600'
+                                }`}
+                            >
+                                <CreditCard className="w-5 h-5 inline mr-2" />
+                                Make Payment
+                            </button>
+                            <button type="button"
+                                onClick={() => setActiveTab('rrr')}
+                                className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                                    activeTab === 'rrr'
+                                        ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                                        : 'text-gray-600 hover:text-blue-600'
+                                }`}
+                            >
+                                <Lock className="w-5 h-5 inline mr-2" />
+                                Pay with Generated RRR
+                            </button>
+                            <button type="button"
+                                onClick={() => setActiveTab('status')}
+                                className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                                    activeTab === 'status'
+                                        ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                                        : 'text-gray-600 hover:text-blue-600'
+                                }`}
+                            >
+                                <Search className="w-5 h-5 inline mr-2" />
+                                Check Status
+                            </button>
                         </div>
 
-                        <div className="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+                        <div className="p-8">
+                            {activeTab === 'payment' ? (
+                                    <div className="space-y-6">
+                                        <form>
+                                            <div className="grid font-[Montserrat] text-sm md:grid-cols-2 gap-6">
 
-                             {/*Tab Navigation*/}
-                            <div className="flex border-b border-gray-200">
-                                <button type="button"
-                                    onClick={() => setActiveTab('payment')}
-                                    className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
-                                        activeTab === 'payment'
-                                            ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                                            : 'text-gray-600 hover:text-blue-600'
-                                    }`}
-                                >
-                                    <CreditCard className="w-5 h-5 inline mr-2" />
-                                    Make Payment
-                                </button>
-                                <button type="button"
-                                    onClick={() => setActiveTab('rrr')}
-                                    className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
-                                        activeTab === 'rrr'
-                                            ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                                            : 'text-gray-600 hover:text-blue-600'
-                                    }`}
-                                >
-                                    <Lock className="w-5 h-5 inline mr-2" />
-                                    Pay with Generated RRR
-                                </button>
-                                <button type="button"
-                                    onClick={() => setActiveTab('status')}
-                                    className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
-                                        activeTab === 'status'
-                                            ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                                            : 'text-gray-600 hover:text-blue-600'
-                                    }`}
-                                >
-                                    <Search className="w-5 h-5 inline mr-2" />
-                                    Check Status
-                                </button>
-                            </div>
-
-                            <div className="p-8">
-                                {activeTab === 'payment' ? (
-                                        <div className="space-y-6">
-                                            <form>
-                                                <div className="grid font-[Montserrat] text-sm md:grid-cols-2 gap-6">
-
-                                                    <div>
-                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Payer Name</label>
-                                                        <input id="name" type="text" placeholder="Name"
-                                                               className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
-
-                                                    </div>
-                                                    <div>
-                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-                                                        <input id="email"
-                                                               type="email"
-                                                               name="payment_email"
-                                                               placeholder="Email"
-                                                               className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
-                                                        <input id="phone" type="tel" placeholder="Phone"
-                                                               className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
-                                                    </div>
-                                                    <div>
-                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Amount (₦)</label>
-                                                        <input id="amount" type="text" placeholder="Amount"
-                                                               value={amount}
-                                                               onChange={(e) => setAmount(e.target.value)}
-                                                               disabled={isAmountFixed}
-                                                               className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
-                                                    </div>
-
-                                                    <div>
-                                                        <label className="block text-sm font-semibold text-gray-700 mb-2"> Service
-                                                        </label>
-                                                        <select className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" onChange={handleServiceTypeChange}>
-                                                            <option value="Select an option" hidden>What are you paying for</option>
-                                                            {serviceTypes.map((service_type_details) => (
-                                                                <option id="serviceTypeID" key={service_type_details.service_type_id}>
-                                                                    {service_type_details.service_type_name}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                    <div>
-                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
-                                                        <textarea id="description" placeholder="Payment Description"
-                                                                  className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
-                                                    </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Payer Name</label>
+                                                    <input id="name" type="text" placeholder="Name"
+                                                           className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
 
                                                 </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                                                    <input id="email"
+                                                           type="email"
+                                                           name="payment_email"
+                                                           placeholder="Email"
+                                                           className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                                                    <input id="phone" type="tel" placeholder="Phone"
+                                                           className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Amount (₦)</label>
+                                                    <input id="amount" type="text" placeholder="Amount"
+                                                           value={amount}
+                                                           onChange={(e) => setAmount(e.target.value)}
+                                                           disabled={isAmountFixed}
+                                                           className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
+                                                </div>
 
-                                                <button type="button" onClick={handleGenerateRRR}
-                                                        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg flex items-center">
-                                                    <Lock className="w-5 h-5 mr-2" />
-                                                    Generate RRR
-                                                </button>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2"> Service
+                                                    </label>
+                                                    <select className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" onChange={handleServiceTypeChange}>
+                                                        <option value="Select an option" hidden>What are you paying for</option>
+                                                        {serviceTypes.map((service_type_details) => (
+                                                            <option id="serviceTypeID" key={service_type_details.service_type_id}>
+                                                                {service_type_details.service_type_name}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+                                                    <textarea id="description" placeholder="Payment Description"
+                                                              className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
+                                                </div>
+
+                                            </div>
+
+                                            <button type="button" onClick={handleGenerateRRR}
+                                                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg flex items-center">
+                                                <Lock className="w-5 h-5 mr-2" />
+                                                Generate RRR
+                                            </button>
+                                        </form>
+                                    </div>
+                                ) :
+                                activeTab === 'rrr' ? (
+                                        <div className="space-y-6">
+                                            <form>
+                                                <div className="space-y-6">
+                                                    <div className="text-center">
+                                                        <Lock className="w-16 h-16 text-blue-500 mx-auto mb-4" />
+                                                        <h3 className="text-2xl font-bold text-gray-900 mb-2">Pay with Generated RRR</h3>
+                                                        <p className="text-gray-600">Enter your Remita Retrieval Reference (RRR) to proceed with payment</p>
+                                                    </div>
+
+                                                    <div className="max-w-md mx-auto">
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Remita Retrieval Reference (RRR)</label>
+
+                                                        <input type="number"
+                                                               autoComplete="off"
+                                                               className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-center text-lg font-mono" id="rrrInput" name="rrr" placeholder="Enter RRR (e.g., 24000706140)"/>
+                                                    </div>
+
+                                                    <div className="flex justify-center">
+                                                        <button type="button" onClick={useRRR}
+                                                                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg flex items-center">
+                                                            <Lock className="w-5 h-5 mr-2" />
+                                                            Proceed to Payment
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </form>
                                         </div>
-                                    ) :
-                                    activeTab === 'rrr' ? (
-                                            <div className="space-y-6">
-                                                <form>
-                                                    <div className="space-y-6">
-                                                        <div className="text-center">
-                                                            <Lock className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-                                                            <h3 className="text-2xl font-bold text-gray-900 mb-2">Pay with Generated RRR</h3>
-                                                            <p className="text-gray-600">Enter your Remita Retrieval Reference (RRR) to proceed with payment</p>
-                                                        </div>
-
-                                                        <div className="max-w-md mx-auto">
-                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Remita Retrieval Reference (RRR)</label>
-
-                                                            <input type="number"
-                                                                   autoComplete="off"
-                                                                   className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-center text-lg font-mono" id="rrrInput" name="rrr" placeholder="Enter RRR (e.g., 24000706140)"/>
-                                                        </div>
-
-                                                        <div className="flex justify-center">
-                                                            <button type="button" onClick={useRRR}
-                                                                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg flex items-center">
-                                                                <Lock className="w-5 h-5 mr-2" />
-                                                                Proceed to Payment
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                    ) :
-                                        (
-                                              <div className="space-y-6">
-                                                  {!paymentInformation ? (
-                                                      <>
-                                                          <div className="text-center">
-                                                              <Search className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-                                                              <h3 className="text-2xl font-bold text-gray-900 mb-2">Check Payment Status</h3>
-                                                              <p className="text-gray-600">Enter your payment reference to track your transaction</p>
-                                                          </div>
-                                                          <div className="max-w-md mx-auto">
-                                                              <label className="block text-sm font-semibold text-gray-700 mb-2">Payment Reference</label>
-                                                              <input
-                                                                  type="text"
-                                                                  placeholder="Enter RRR (e.g., 24000706140)"
-                                                                  id="checkRRRInput"
-                                                                  className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-center text-lg font-mono"
-                                                              />
-                                                          </div>
-                                                          <div className="flex justify-center">
-                                                              <button
-                                                                  onClick={getStatusInfo}
-                                                                  className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-2 rounded-xl hover:from-green-700 hover:to-emerald-700
-                                                                  transition-all transform
-                                                                  hover:scale-105 shadow-lg flex items-center">
-                                                                  <CheckCircle className="w-5 h-5 mr-2" />
-                                                                  Check Status
-                                                              </button>
-                                                          </div>
-
-                                                      </>
-                                                  ) : (
-                                                      <div className="max-w-2xl mx-auto">
-                                                          {/* Status Header */}
-                                                          {/*<div className="text-center mb-8">*/}
-                                                          {/*    <div className="flex justify-center mb-4">*/}
-                                                          {/*        {getStatusIcon(paymentStatus.status)}*/}
-                                                          {/*    </div>*/}
-                                                          {/*    <h3 className="text-2xl font-bold text-gray-900 mb-2">Payment Status</h3>*/}
-                                                          {/*    <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border ${getStatusColor(paymentStatus.status)}`}>*/}
-                                                          {/*        {paymentStatus.status.charAt(0).toUpperCase() + paymentStatus.status.slice(1)}*/}
-                                                          {/*    </div>*/}
-                                                          {/*</div>*/}
-
-                                                          {/* Payment Details Card */}
-                                                          <div className="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden">
-                                                              {/* Amount Section */}
-                                                              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border-b border-gray-200">
-                                                                  <div className="text-center">
-                                                                      <p className="text-sm text-gray-600 mb-1">Amount Paid</p>
-                                                                      <p className="text-4xl font-bold text-gray-900">₦{parseInt(inputBoxStatus.amount).toLocaleString()}</p>
-                                                                  </div>
-                                                              </div>
-
-                                                              {/* Details Grid */}
-                                                              <div className="p-6 space-y-4">
-                                                                  <div className="grid md:grid-cols-2 gap-6">
-                                                                      <div>
-                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Method of Payment</label>
-                                                                          <p className="text-gray-900 font-mono bg-gray-50 py-2 rounded-lg">{inputBoxStatus.channel}</p>
-                                                                      </div>
-                                                                      <div>
-                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Order ID</label>
-                                                                          <p className="text-gray-900 font-mono bg-gray-50 py-2 rounded-lg">{inputBoxStatus.orderId}</p>
-                                                                      </div>
-                                                                  </div>
-
-                                                                  <div className="grid md:grid-cols-2 gap-6">
-                                                                      <div>
-                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Date & Time</label>
-                                                                          <p className="text-gray-900">{new Date(inputBoxStatus.paymentDate).toLocaleString()}</p>
-                                                                      </div>
-                                                                      <div>
-                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Fee Charged </label>
-                                                                          <p className="text-gray-900">₦{inputBoxStatus.chargeFee}</p>
-                                                                      </div>
-                                                                  </div>
-
-                                                                  <div>
-                                                                      <label className="block text-sm font-semibold text-gray-500 mb-1">Description</label>
-                                                                      <p className="text-gray-900">{inputBoxStatus.paymentDescription}</p>
-                                                                  </div>
-
-                                                                  {inputBoxStatus.rrr && (
-                                                                      <div>
-                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">RRR</label>
-                                                                          <p className="text-gray-900 font-mono bg-gray-50 py-2 rounded-lg">{inputBoxStatus.rrr}</p>
-                                                                      </div>
-                                                                  )}
-                                                              </div>
-
-                                                              {/* Customer Information */}
-                                                              <div className="bg-gray-50 p-6 border-t border-gray-200">
-                                                                  <h4 className="text-lg font-semibold text-gray-900 mb-4">Customer Information</h4>
-                                                                  <div className="grid md:grid-cols-3 gap-4">
-                                                                      <div>
-                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Name</label>
-                                                                          <p className="text-gray-900">{inputBoxStatus.payerName}</p>
-                                                                      </div>
-                                                                      <div>
-                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Email</label>
-                                                                          <p className="text-gray-900">{inputBoxStatus.payerEmail}</p>
-                                                                      </div>
-                                                                      <div>
-                                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Phone</label>
-                                                                          <p className="text-gray-900">{inputBoxStatus.payerPhoneNumber}</p>
-                                                                      </div>
-                                                                  </div>
-                                                              </div>
-
-                                                               {/*Action Buttons*/}
-                                                              <div className="p-6 border-t border-gray-200 flex flex-col sm:flex-row gap-3">
-                                                                  <button className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors flex items-center justify-center">
-                                                                      <Mail className="w-5 h-5 mr-2" />
-                                                                      Email Receipt
-                                                                  </button>
-                                                                  <button className="flex-1 border-2 border-gray-300 text-gray-700 px-6 py-3 rounded-xl hover:border-blue-600 hover:text-blue-600 transition-colors flex items-center justify-center">
-                                                                      <ArrowRight className="w-5 h-5 mr-2" />
-                                                                      Download PDF
-                                                                  </button>
-                                                                  <button
-                                                                      onClick={() => {setPaymentInformation(null); }}
-                                                                      className="sm:w-auto bg-gray-600 text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition-colors flex items-center justify-center"
-                                                                  >
-                                                                      <Search className="w-5 h-5 mr-2" />
-                                                                      New Search
-                                                                  </button>
-                                                              </div>
-                                                          </div>
-                                                      </div>
-                                                  )}
-
+                                ) :
+                                (
+                                    <div className="space-y-6">
+                                      {!paymentInformation ? (
+                                          <>
+                                              <div className="text-center">
+                                                  <Search className="w-16 h-16 text-blue-500 mx-auto mb-4" />
+                                                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Check Payment Status</h3>
+                                                  <p className="text-gray-600">Enter your payment reference to track your transaction</p>
+                                              </div>
+                                              <div className="max-w-md mx-auto">
+                                                  <label className="block text-sm font-semibold text-gray-700 mb-2">Payment Reference</label>
+                                                  <input
+                                                      type="text"
+                                                      placeholder="Enter RRR (e.g., 24000706140)"
+                                                      id="checkRRRInput"
+                                                      className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-center text-lg font-mono"
+                                                  />
+                                              </div>
+                                              <div className="flex justify-center">
+                                                  <button
+                                                      onClick={getStatusInfo}
+                                                      className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-2 rounded-xl hover:from-green-700 hover:to-emerald-700
+                                                      transition-all transform
+                                                      hover:scale-105 shadow-lg flex items-center">
+                                                      <CheckCircle className="w-5 h-5 mr-2" />
+                                                      Check Status
+                                                  </button>
                                               </div>
 
-                                        )}
-                            </div>
+                                          </>
+                                      ) : (
+                                          <div className="max-w-2xl mx-auto">
+                                              {/* Status Header */}
+                                              {/*<div className="text-center mb-8">*/}
+                                              {/*    <div className="flex justify-center mb-4">*/}
+                                              {/*        {getStatusIcon(paymentStatus.status)}*/}
+                                              {/*    </div>*/}
+                                              {/*    <h3 className="text-2xl font-bold text-gray-900 mb-2">Payment Status</h3>*/}
+                                              {/*    <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border ${getStatusColor(paymentStatus.status)}`}>*/}
+                                              {/*        {paymentStatus.status.charAt(0).toUpperCase() + paymentStatus.status.slice(1)}*/}
+                                              {/*    </div>*/}
+                                              {/*</div>*/}
 
+                                              {/* Payment Details Card */}
+                                              <div className="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden">
+                                                  {/* Amount Section */}
+                                                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border-b border-gray-200">
+                                                      <div className="text-center">
+                                                          <p className="text-sm text-gray-600 mb-1">Amount Paid</p>
+                                                          <p className="text-4xl font-bold text-gray-900">₦{parseInt(inputBoxStatus.amount).toLocaleString()}</p>
+                                                      </div>
+                                                  </div>
 
+                                                  {/* Details Grid */}
+                                                  <div className="p-6 space-y-4">
+                                                      <div className="grid md:grid-cols-2 gap-6">
+                                                          <div>
+                                                              <label className="block text-sm font-semibold text-gray-500 mb-1">Method of Payment</label>
+                                                              <p className="text-gray-900 font-mono bg-gray-50 py-2 rounded-lg">{inputBoxStatus.channel}</p>
+                                                          </div>
+                                                          <div>
+                                                              <label className="block text-sm font-semibold text-gray-500 mb-1">Order ID</label>
+                                                              <p className="text-gray-900 font-mono bg-gray-50 py-2 rounded-lg">{inputBoxStatus.orderId}</p>
+                                                          </div>
+                                                      </div>
 
+                                                      <div className="grid md:grid-cols-2 gap-6">
+                                                          <div>
+                                                              <label className="block text-sm font-semibold text-gray-500 mb-1">Date & Time</label>
+                                                              <p className="text-gray-900">{new Date(inputBoxStatus.paymentDate).toLocaleString()}</p>
+                                                          </div>
+                                                          <div>
+                                                              <label className="block text-sm font-semibold text-gray-500 mb-1">Fee Charged </label>
+                                                              <p className="text-gray-900">₦{inputBoxStatus.chargeFee}</p>
+                                                          </div>
+                                                      </div>
 
+                                                      <div>
+                                                          <label className="block text-sm font-semibold text-gray-500 mb-1">Description</label>
+                                                          <p className="text-gray-900">{inputBoxStatus.paymentDescription}</p>
+                                                      </div>
 
+                                                      {inputBoxStatus.rrr && (
+                                                          <div>
+                                                              <label className="block text-sm font-semibold text-gray-500 mb-1">RRR</label>
+                                                              <p className="text-gray-900 font-mono bg-gray-50 py-2 rounded-lg">{inputBoxStatus.rrr}</p>
+                                                          </div>
+                                                      )}
+                                                  </div>
 
+                                                  {/* Customer Information */}
+                                                  <div className="bg-gray-50 p-6 border-t border-gray-200">
+                                                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Customer Information</h4>
+                                                      <div className="grid md:grid-cols-3 gap-4">
+                                                          <div>
+                                                              <label className="block text-sm font-semibold text-gray-500 mb-1">Name</label>
+                                                              <p className="text-gray-900">{inputBoxStatus.payerName}</p>
+                                                          </div>
+                                                          <div>
+                                                              <label className="block text-sm font-semibold text-gray-500 mb-1">Email</label>
+                                                              <p className="text-gray-900">{inputBoxStatus.payerEmail}</p>
+                                                          </div>
+                                                          <div>
+                                                              <label className="block text-sm font-semibold text-gray-500 mb-1">Phone</label>
+                                                              <p className="text-gray-900">{inputBoxStatus.payerPhoneNumber}</p>
+                                                          </div>
+                                                      </div>
+                                                  </div>
 
-
+                                                   {/*Action Buttons*/}
+                                                  <div className="p-6 border-t border-gray-200 flex flex-col sm:flex-row gap-3">
+                                                      <button className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors flex items-center justify-center">
+                                                          <Mail className="w-5 h-5 mr-2" />
+                                                          Email Receipt
+                                                      </button>
+                                                      <button className="flex-1 border-2 border-gray-300 text-gray-700 px-6 py-3 rounded-xl hover:border-blue-600 hover:text-blue-600 transition-colors flex items-center justify-center">
+                                                          <ArrowRight className="w-5 h-5 mr-2" />
+                                                          Download PDF
+                                                      </button>
+                                                      <button
+                                                          onClick={() => {setPaymentInformation(null); }}
+                                                          className="sm:w-auto bg-gray-600 text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition-colors flex items-center justify-center"
+                                                      >
+                                                          <Search className="w-5 h-5 mr-2" />
+                                                          New Search
+                                                      </button>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      )}
+                                    </div>
+                                )
+                            }
                         </div>
+                    </div>
                 </div>
             </section>
 
@@ -541,66 +531,66 @@ function InlinePayment() {
 
 
 
-            <div className="max-w-[1000px] m-[auto] relative overflow-x-auto shadow-md sm:rounded-lg">
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        placeholder="Search by RRR"
-                        className="border p-2 rounded w-full sm:w-1/3"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                </div>
+            {/*<div className="max-w-[1000px] m-[auto] relative overflow-x-auto shadow-md sm:rounded-lg">*/}
+            {/*    <div className="mb-4">*/}
+            {/*        <input*/}
+            {/*            type="text"*/}
+            {/*            placeholder="Search by RRR"*/}
+            {/*            className="border p-2 rounded w-full sm:w-1/3"*/}
+            {/*            value={searchQuery}*/}
+            {/*            onChange={(e) => setSearchQuery(e.target.value)}*/}
+            {/*        />*/}
+            {/*    </div>*/}
 
 
 
-                <table className="w-full p-5 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        {TABLE_HEAD.map((head, index) => (
-                            <th
-                                key={index}
-                                className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 px-6 py-3 transition-colors hover:bg-blue-gray-50"
-                            >
-                                {head}
-                            </th>
-                        ))}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {filteredTransactions.map((transaction, index) => (
-                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td className="px-6 py-4">
-                                {transaction.RRR}
-                            </td>
-                            <th scope="row"
-                                className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                <div>
-                                    <div className="text-base font-semibold">{transaction.payer_name}</div>
-                                    <div className="font-normal text-gray-500">neil.sims@flowbite.com</div>
-                                </div>
-                            </th>
-                            <td className="px-6 py-4">
-                                <a href="#" className="font-medium">{transaction.amount}</a>
-                            </td>
-                            <td className="px-6 py-4">
-                                <a href="#" className="font-medium">{transaction.description}</a>
-                            </td>
-                            <td className="px-6 py-4">
-                                <a href="#" className="font-medium">{transaction.transaction_date}</a>
-                            </td>
-                            <td className="px-6 py-4">
-                                <div className="flex items-center">
-                                    <div className={`h-2.5 w-2.5 rounded-full ${transaction.status === "Transaction Pending" ? "bg-yellow-500" : "bg-green-500"} me-2`}></div>
-                                    {transaction.status}
-                                </div>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
+            {/*    <table className="w-full p-5 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">*/}
+            {/*        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">*/}
+            {/*        <tr>*/}
+            {/*            {TABLE_HEAD.map((head, index) => (*/}
+            {/*                <th*/}
+            {/*                    key={index}*/}
+            {/*                    className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 px-6 py-3 transition-colors hover:bg-blue-gray-50"*/}
+            {/*                >*/}
+            {/*                    {head}*/}
+            {/*                </th>*/}
+            {/*            ))}*/}
+            {/*        </tr>*/}
+            {/*        </thead>*/}
+            {/*        <tbody>*/}
+            {/*        {filteredTransactions.map((transaction, index) => (*/}
+            {/*            <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">*/}
+            {/*                <td className="px-6 py-4">*/}
+            {/*                    {transaction.RRR}*/}
+            {/*                </td>*/}
+            {/*                <th scope="row"*/}
+            {/*                    className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">*/}
+            {/*                    <div>*/}
+            {/*                        <div className="text-base font-semibold">{transaction.payer_name}</div>*/}
+            {/*                        <div className="font-normal text-gray-500">neil.sims@flowbite.com</div>*/}
+            {/*                    </div>*/}
+            {/*                </th>*/}
+            {/*                <td className="px-6 py-4">*/}
+            {/*                    <a href="#" className="font-medium">{transaction.amount}</a>*/}
+            {/*                </td>*/}
+            {/*                <td className="px-6 py-4">*/}
+            {/*                    <a href="#" className="font-medium">{transaction.description}</a>*/}
+            {/*                </td>*/}
+            {/*                <td className="px-6 py-4">*/}
+            {/*                    <a href="#" className="font-medium">{transaction.transaction_date}</a>*/}
+            {/*                </td>*/}
+            {/*                <td className="px-6 py-4">*/}
+            {/*                    <div className="flex items-center">*/}
+            {/*                        <div className={`h-2.5 w-2.5 rounded-full ${transaction.status === "Transaction Pending" ? "bg-yellow-500" : "bg-green-500"} me-2`}></div>*/}
+            {/*                        {transaction.status}*/}
+            {/*                    </div>*/}
+            {/*                </td>*/}
+            {/*            </tr>*/}
+            {/*        ))}*/}
+            {/*        </tbody>*/}
 
-                </table>
-            </div>
+            {/*    </table>*/}
+            {/*</div>*/}
         </>
     )
 }
