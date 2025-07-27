@@ -4,14 +4,8 @@ const router = express.Router();
 const https = require('https');
 const cryptoJS = require('crypto-js');
 let mysql = require('mysql2');
-
-
-const con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "Kenechukwu10",
-    database: "payment_gateway"
-});
+const { remita } = require('../config');
+const con = require('../databaseConnection/connection.js');
 
 con.connect(function(err) {
     if (err) throw err;
@@ -21,14 +15,12 @@ con.connect(function(err) {
 router.post('/generate-rrr', (req, res) => {
     const { payerName, payerEmail, payerPhone, amount, description, serviceTypeId} = req.body;
 
-    const demoUrl = "demo.remita.net";
-    const genRRRUrlPath = "/remita/exapp/api/v1/send/api/echannelsvc/merchant/api/paymentinit";
-    const merchantId = "2547916";
-    const apiKey = "1946";
-    // const serviceTypeId = "4430731";
+    const demoUrl = remita.demoUrl;
+    const genRRRUrlPath = remita.genRRRUrlPath;
+    const merchantId = remita.merchantId;
+    const apiKey = remita.apiKey;
     let d = new Date();
     let orderId = d.getTime();
-    // const description = "Payment for Donation 3";
     const apiHash = cryptoJS.SHA512(merchantId + serviceTypeId + orderId + amount + apiKey).toString();
 
 
@@ -54,7 +46,7 @@ router.post('/generate-rrr', (req, res) => {
 
     const request = https.request(options, (response) => {
         let str = '';
-        response.on('data', (chunk) => str += chunk);
+        response.on('data', (dataStream) => str += dataStream);
         response.on('end', () => {
             try {
                 const jsonString = str.substring(str.indexOf('{'), str.lastIndexOf('}') + 1);

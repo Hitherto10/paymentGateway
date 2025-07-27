@@ -11,6 +11,7 @@ const cors = require('cors');
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+
 app.use('/api', generateRRR);
 app.use('/api', checkStatus);
 app.use('/api', getServiceTypes);

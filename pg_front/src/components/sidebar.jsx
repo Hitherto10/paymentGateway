@@ -16,7 +16,6 @@ function Sidebar() {
                 </div>
                 <div>
                     <button className={`p-3 hover:bg-gray-600 cursor-pointer`}>Logout</button>
-
                 </div>
             </div>
         </>

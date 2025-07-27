@@ -60,7 +60,8 @@ function InlinePayment() {
         const newRRR = data.RRR;
         setRRR(newRRR);
         const payment_status = await retrieveRemitaRef(newRRR);
-        console.log(payment_status.message)
+        console.log(data)
+        // console.log(payment_status.message)
         setpaymentStatus(payment_status.message);
 
         purchases.push({
@@ -71,7 +72,7 @@ function InlinePayment() {
             "amount": document.getElementById("amount").value,
         });
 
-        console.log(purchases);
+        // console.log(purchases);
 
         return(data.RRR)
     }
@@ -92,7 +93,7 @@ function InlinePayment() {
             const data = await res.json();
             // let transactionData = JSON.stringify(data);
             setTransactionList(data)
-            console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
         }
 
         fetchTransactionHistory();
@@ -217,9 +218,7 @@ function InlinePayment() {
             },
             onClose: function () {
                 let leavePayment = confirm("Abandon Payment?");
-                if (leavePayment) {
-
-                } else {
+                if (leavePayment) { /* empty */ } else {
                     makePayment();
                 }
             }

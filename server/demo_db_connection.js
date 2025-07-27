@@ -1,14 +1,8 @@
 let mysql = require('mysql2');
 const express = require('express');
 const router = express.Router();
-
-
-const con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "Kenechukwu10",
-    database: "payment_gateway"
-});
+const { sql } = require('./config');
+const con = require('./databaseConnection/connection.js');
 
 con.connect(function(err) {
     if (err) throw err;
