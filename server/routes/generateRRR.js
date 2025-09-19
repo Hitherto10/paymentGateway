@@ -1,11 +1,19 @@
 // server/routes/generateRRR.js
-const express = require('express');
+// const express = require('express');
+// const https = require('https');
+// const cryptoJS = require('crypto-js');
+// let mysql = require('mysql2');
+// const { remita } = require('../config');
+// const con = require('../databaseConnection/connection.js');
+
+import express from 'express';
+import https from 'https';
+import cryptoJS from 'crypto-js';
+import mysql from 'mysql2';
+import { remita } from '../config.js';
+import con from '../databaseConnection/connection.js';
+
 const router = express.Router();
-const https = require('https');
-const cryptoJS = require('crypto-js');
-let mysql = require('mysql2');
-const { remita } = require('../config');
-const con = require('../databaseConnection/connection.js');
 
 con.connect(function(err) {
     if (err) throw err;
@@ -67,4 +75,4 @@ router.post('/generate-rrr', (req, res) => {
     request.end();
 });
 
-module.exports = router;
+export default router;

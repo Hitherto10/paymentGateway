@@ -7,6 +7,7 @@ import {
     Lock,
     Mail,
 } from 'lucide-react';
+import.meta.env.VITE_PUBLIC_KEY;
 
 function InlinePayment() {
     const [rrr, setRRR] = useState('');
@@ -157,7 +158,8 @@ function InlinePayment() {
 
         let form = document.querySelector("#payment-form");
         let paymentEngine = RmPaymentEngine.init({
-            key: "QzAwMDAyNzEyNTl8MTEwNjE4NjF8OWZjOWYwNmMyZDk3MDRhYWM3YThiOThlNTNjZTE3ZjYxOTY5NDdmZWE1YzU3NDc0ZjE2ZDZjNTg1YWYxNWY3NWM4ZjMzNzZhNjNhZWZlOWQwNmJhNTFkMjIxYTRiMjYzZDkzNGQ3NTUxNDIxYWNlOGY4ZWEyODY3ZjlhNGUwYTY=",
+            // key: "QzAwMDAyNzEyNTl8MTEwNjE4NjF8OWZjOWYwNmMyZDk3MDRhYWM3YThiOThlNTNjZTE3ZjYxOTY5NDdmZWE1YzU3NDc0ZjE2ZDZjNTg1YWYxNWY3NWM4ZjMzNzZhNjNhZWZlOWQwNmJhNTFkMjIxYTRiMjYzZDkzNGQ3NTUxNDIxYWNlOGY4ZWEyODY3ZjlhNGUwYTY=",
+            key: VITE_PUBLIC_KEY,
             processRrr: true,
             transactionId: Math.floor(Math.random()*1101233),
             extendedData: {
@@ -195,10 +197,11 @@ function InlinePayment() {
 
         let payWithRRR = document.getElementById("rrrInput");
         let paymentEngine = RmPaymentEngine.init({
-            key: "QzAwMDAyNzEyNTl8MTEwNjE4NjF8OWZjOWYwNmMyZDk3MDRhYWM3YThiOThlNTNjZTE3ZjYxOTY5NDdmZWE1YzU3NDc0ZjE2ZDZjNTg1YWYxNWY3NWM4ZjMzNzZhNjNhZWZlOWQwNmJhNTFkMjIxYTRiMjYzZDkzNGQ3NTUxNDIxYWNlOGY4ZWEyODY3ZjlhNGUwYTY=",
+            // key: "QzAwMDAyNzEyNTl8MTEwNjE4NjF8OWZjOWYwNmMyZDk3MDRhYWM3YThiOThlNTNjZTE3ZjYxOTY5NDdmZWE1YzU3NDc0ZjE2ZDZjNTg1YWYxNWY3NWM4ZjMzNzZhNjNhZWZlOWQwNmJhNTFkMjIxYTRiMjYzZDkzNGQ3NTUxNDIxYWNlOGY4ZWEyODY3ZjlhNGUwYTY=",
+            key: VITE_PUBLIC_KEY,
             processRrr: true,
             transactionId: Math.floor(Math.random()*1101233),
-            extendedData: {
+            extendedData: { 
                 customFields: [
                     {
                         name: "rrr",

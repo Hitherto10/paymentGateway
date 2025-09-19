@@ -1,7 +1,10 @@
-let mysql = require('mysql2');
-const express = require('express');
-const router = express.Router();
+// let mysql = require('mysql2');
+// const express = require('express');
 
+import mysql from 'mysql2';
+import express from 'express';
+
+const router = express.Router();
 
 const con = mysql.createConnection({
     host: "localhost",
@@ -34,4 +37,4 @@ router.post('/save-to-db', (req, res) =>
     });
 })
 
-module.exports = router;
+export default router;

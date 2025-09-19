@@ -1,8 +1,12 @@
-let mysql = require('mysql2');
-const express = require('express');
-const router = express.Router();
-const { sql } = require('./config');
+// let mysql = require('mysql2');
+// const express = require('express');
+// const { sql } = require('./config');
 
+import mysql from 'mysql2';
+import express from 'express';
+import { sql } from './config.js';
+
+const router = express.Router();
 
 const con = mysql.createConnection({
     host: sql.host,
@@ -24,4 +28,4 @@ router.get('/transaction-history', (req, res) => {
     });
 })
 
-module.exports = router;
+export default router;

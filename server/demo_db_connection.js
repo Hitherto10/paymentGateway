@@ -1,8 +1,15 @@
-let mysql = require('mysql2');
-const express = require('express');
+// let mysql = require('mysql2');
+// const express = require('express');
+// const { sql } = require('./config');
+// const con = require('./databaseConnection/connection.js');
+
+import mysql from 'mysql2';
+import express from 'express';
+import { sql } from './config.js';
+
+import con from './databaseConnection/connection.js'
+
 const router = express.Router();
-const { sql } = require('./config');
-const con = require('./databaseConnection/connection.js');
 
 con.connect(function(err) {
     if (err) throw err;
@@ -17,4 +24,4 @@ router.get('/service-types', (req, res) => {
     });
 })
 
-module.exports = router;
+export default router;

@@ -1,5 +1,8 @@
-const mysql = require("mysql2");
-const { sql } = require('../config');
+// const mysql = require("mysql2");
+// const { sql } = require('../config');
+
+import mysql from 'mysql2';
+import { sql } from '../config.js';
 
 const con = mysql.createConnection({
     host: sql.host,
@@ -7,5 +10,5 @@ const con = mysql.createConnection({
     password: sql.password,
     database: sql.database,
 });
-
-module.exports = con;
+console.log( sql.host);
+export default con;

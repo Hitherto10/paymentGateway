@@ -1,8 +1,13 @@
 // server/routes/checkRRRStatus.js
-const express = require('express');
+// const express = require('express');
+// const https = require('https');
+// const cryptoJS = require('crypto-js');
+
+import express from 'express';
+import https from 'https';
+import cryptoJS from 'crypto-js';
+
 const router = express.Router();
-const https = require('https');
-const cryptoJS = require('crypto-js');
 
 router.get('/check-status/:rrr', (req, res) => {
     const rrr = req.params.rrr;
@@ -41,4 +46,4 @@ router.get('/check-status/:rrr', (req, res) => {
     request.end();
 });
 
-module.exports = router;
+export default router;
