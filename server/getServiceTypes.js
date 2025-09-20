@@ -3,8 +3,8 @@ import { pg_con } from './databaseConnection/connection.js';
 
 const router = express.Router();
 
-router.get('/transaction-history', (req, res) => {
-    pg_con.query("SELECT * FROM transaction_history", (err, results) => {
+router.get('/service-types', (req, res) => {
+    pg_con.query("SELECT * FROM public.service_types", (err, results) => {
         if (err) {
             return res.status(500).json({ error: 'Database query failed', details: err });
         }

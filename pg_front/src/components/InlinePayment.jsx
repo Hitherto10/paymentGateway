@@ -18,7 +18,7 @@ function InlinePayment() {
     const [transactionList, setTransactionList] = useState([])
     const [serviceTypes, setServiceTypes] = useState([]);
     const [selectedServiceType, setSelectedServiceType] = useState(null);
-    const [amount, setAmount] = useState(0);
+    const [amount, setAmount] = useState('');
     const [isAmountFixed, setIsAmountFixed] = useState(false);
     const [receiptDetails, setReceiptDetails] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
@@ -51,7 +51,7 @@ function InlinePayment() {
                 payerName: document.getElementById("name").value,
                 payerEmail: document.getElementById("email").value,
                 payerPhone: document.getElementById("phone").value,
-                amount: document.getElementById("amount").value,
+                amount: amount,
                 description: document.getElementById("description").value,
                 serviceTypeId: service_type_id
             })
@@ -101,22 +101,29 @@ function InlinePayment() {
     }, []);
 
     const handleServiceTypeChange = (event) => {
-        const serviceType = serviceTypes.find(service => service.service_type_name === event.target.value);
+        const selectedName = event.target.value;
+        const serviceType = serviceTypes.find(
+            (service) => service.service_type_name === selectedName
+        );
+        if (!serviceType) return;
 
+        setService_type_id(serviceType.service_type_id);
 
-        if (serviceType) {
-            setSelectedServiceType(serviceType);
-            setService_type_id(serviceType.service_type_id);
-            if (serviceType.is_amount_fixed  === 1){
-                setAmount(serviceType.amount);
-                setIsAmountFixed(true);
-                document.getElementById("amount").disabled = true;
-            }else{
-                setAmount(0);
-                setIsAmountFixed(false);
-            }
+        // Handle boolean or numeric truthy values
+        const isFixed =
+            serviceType.is_amount_fixed === true ||
+            serviceType.is_amount_fixed === 1 ||
+            serviceType.is_amount_fixed === '1';
+
+        if (isFixed) {
+            setAmount(String(serviceType.amount ?? '')); // update the input
+            setIsAmountFixed(true);
+        } else {
+            setAmount(''); // or keep previous if you prefer
+            setIsAmountFixed(false);
         }
     };
+
 
     async function savePaymentDetails() {
         const payment_status = await retrieveRemitaRef(rrr);
@@ -316,11 +323,14 @@ function InlinePayment() {
                                                 </div>
                                                 <div>
                                                     <label className="block text-sm font-semibold text-gray-700 mb-2">Amount (₦)</label>
-                                                    <input id="amount" type="text" placeholder="Amount"
-                                                           value={amount}
-                                                           onChange={(e) => setAmount(e.target.value)}
-                                                           disabled={isAmountFixed}
-                                                           className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
+                                                    <input
+                                                        id="amount"
+                                                        type="text"
+                                                        placeholder="Amount"
+                                                        value={amount ?? ''}
+                                                        onChange={(e) => setAmount(e.target.value)}
+                                                        disabled={isAmountFixed}
+                                                        className="input w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
                                                 </div>
 
                                                 <div>

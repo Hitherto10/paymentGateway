@@ -1,14 +1,13 @@
-// const mysql = require("mysql2");
-// const { sql } = require('../config');
+import { Client } from 'pg';
+import { pg } from '../config.js';
 
-import mysql from 'mysql2';
-import { sql } from '../config.js';
-
-const con = mysql.createConnection({
-    host: sql.host,
-    user: sql.user,
-    password: sql.password,
-    database: sql.database,
+export const pg_con = new Client({
+    user: pg.user,
+    host: pg.host,
+    database: pg.database,
+    password: pg.password,
 });
-console.log( sql.host);
-export default con;
+
+pg_con.connect(function(err) {
+    if (err) throw err;
+});
