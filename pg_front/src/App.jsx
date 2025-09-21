@@ -1,4 +1,4 @@
-import InlinePayment from "./components/InlinePayment.jsx";
+import Home from "./pages/Home.jsx";
 import Sidebar from "./components/Sidebar.jsx";
 // import PaymentPortalLanding from "./components/PaymentPortalLanding.jsx";
 
@@ -8,7 +8,7 @@ function App() {
   return (
       <>
           <Sidebar />
-          <InlinePayment />
+          <Home />
           {/*<PaymentPortalLanding />*/}
       </>
   );
